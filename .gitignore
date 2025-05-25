@@ -174,13 +174,6 @@ poetry.toml
 pyrightconfig.json
 
 # shared-workspace
-spark-cluster-docker/shared-workspace/**/*.parquet
-spark-cluster-docker/shared-workspace/**/*.csv
-spark-cluster-docker/shared-workspace/**/*.json
-spark-cluster-docker/shared-workspace/**/*.xlsx
-spark-cluster-docker/shared-workspace/**/*.xls
-spark-cluster-docker/shared-workspace/**/*.db
-spark-cluster-docker/shared-workspace/**/*.sqlite
-spark-cluster-docker/shared-workspace/**/*.sqlite3
+spark-cluster-docker/shared-workspace/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
