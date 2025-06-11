@@ -9,6 +9,7 @@ volumes:
     driver: local
   airflow-logs-volume:
     driver: local
+  postgres_data:
 services:
   jupyterlab:
     image: jupyterlab
@@ -22,7 +23,7 @@ services:
       - MINIO_ROOT_PASSWORD=minio123
       - MINIO_ENDPOINT=http://minio:9000
       - MINIO_DEFAULT_BUCKET=test-bucket
-      - MAIN_PATH=/opt/workspace
+      - HOME_PATH=/opt/workspace
   jupyter-spark-master:
     image: jupyter-spark-master
     container_name: jupyter-spark-master
@@ -107,12 +108,14 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-postgres/airflow
       AIRFLOW__CORE__LOAD_EXAMPLES: 'true'
-      MAIN_PATH: /opt/airflow
+      HOME_PATH: /opt/airflow
+      PYTHONPATH: "${PYTHONPATH}:/opt/airflow/dixy-demand:/opt/airflow/_modules"
       S3_BUCKET: dixy-fileshare
     volumes:
-      - ./shared-workspace/dags:/opt/airflow/dags
+      - ./shared-workspace/dixy-demand/dags:/opt/airflow/dags
       - ./shared-workspace/logs:/opt/airflow/logs
       - ./shared-workspace/plugins:/opt/airflow/plugins
+      - ./shared-workspace/dixy-demand:/opt/airflow/dixy-demand
       - ./shared-workspace/_modules:/opt/airflow/_modules
     ports:
       - "8085:8080"
@@ -127,11 +130,13 @@ services:
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-postgres/airflow
-      MAIN_PATH: /opt/airflow
+      HOME_PATH: /opt/airflow
+      PYTHONPATH: "${PYTHONPATH}:/opt/airflow/dixy-demand:/opt/airflow/_modules"
       S3_BUCKET: dixy-fileshare
     volumes:
-      - ./shared-workspace/dags:/opt/airflow/dags
+      - ./shared-workspace/dixy-demand/dags:/opt/airflow/dags
       - ./shared-workspace/logs:/opt/airflow/logs
       - ./shared-workspace/plugins:/opt/airflow/plugins
+      - ./shared-workspace/dixy-demand:/opt/airflow/dixy-demand
       - ./shared-workspace/_modules:/opt/airflow/_modules
     command: scheduler
